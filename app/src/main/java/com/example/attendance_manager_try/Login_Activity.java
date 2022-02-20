@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,18 +32,15 @@ public class Login_Activity extends AppCompatActivity {
         entered_Password = findViewById(R.id.password);
         login = findViewById(R.id.login);
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String username = entered_Username.getText().toString();
-                String password = entered_Password.getText().toString();
+        login.setOnClickListener(view -> {
+            String username = entered_Username.getText().toString();
+            String password = entered_Password.getText().toString();
 
-                login_Modal = new Login_Modal(username,password);
+            login_Modal = new Login_Modal(username,password);
 
-                firebaseDatabase  = FirebaseDatabase.getInstance();
-                databaseReference = firebaseDatabase.getReference().child("login_credentials").child(username);
-                addData(login_Modal);
-            }
+            firebaseDatabase  = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference().child("login_credentials").child(username);
+            addData(login_Modal);
         });
     }
 
