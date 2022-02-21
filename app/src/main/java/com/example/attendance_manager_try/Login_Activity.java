@@ -36,32 +36,21 @@ public class Login_Activity extends AppCompatActivity {
             String username = entered_Username.getText().toString();
             String password = entered_Password.getText().toString();
             if(username.equals("") || password.equals("")){
-                Toast.makeText(this, "Please Fill All the Feilds", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please Fill All the Fields", Toast.LENGTH_SHORT).show();
             }
             login_Modal = new Login_Modal(username,password);
 
             firebaseDatabase  = FirebaseDatabase.getInstance();
-            databaseReference = firebaseDatabase.getReference().child("login_credentials");
-            Boolean is_Correct = authenticate_Data(login_Modal);
-        });
-    }
-
-    private Boolean authenticate_Data(Login_Modal login_modal) {
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot snap: snapshot.getChildren()) {
-                    if()
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            databaseReference = firebaseDatabase.getReference().child("login_credentials").child(username);
+            int isAuthenticated = login_Modal.authenticate(username,password);
+            if(isAuthenticated == 1){
+                // Authenticated
+            }else if(isAuthenticated == 0)
+            {
+                //Password Incorrect
+            }else if(isAuthenticated == -1){
+                // Incorrect Username
             }
         });
-        return false;
     }
-
-
 }

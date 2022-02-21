@@ -23,4 +23,16 @@ public class Login_Modal {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public int authenticate(String username,String password){
+        if(this.username == username){
+             if(this.password == password)
+                return 1; //Authenticate
+             else
+                return 0; //Incorrect Password
+        }else
+             return -1; //Incorrect Username
+    }
+
+
 }
