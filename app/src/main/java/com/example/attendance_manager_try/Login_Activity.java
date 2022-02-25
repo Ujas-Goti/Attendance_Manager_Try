@@ -25,7 +25,6 @@ public class Login_Activity extends AppCompatActivity {
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,44 +38,26 @@ public class Login_Activity extends AppCompatActivity {
             int isAuthenticated = 2;
             String username = entered_Username.getText().toString();
             String password = entered_Password.getText().toString();
-         if(username.equals("") || password.equals("")){
-                Toast.makeText(this, "Please Fill All the Fields", Toast.LENGTH_SHORT).show();
-         }
 
          try {
              firebaseDatabase  = FirebaseDatabase.getInstance();
-             databaseReference = firebaseDatabase.getReference().child("login_credentials").child("Meet");
+             databaseReference = firebaseDatabase.getReference().child("login_credentials").child(username);
              databaseReference.addValueEventListener(new ValueEventListener() {
                  @Override
                  public void onDataChange(@NonNull DataSnapshot snapshot) {
-                     login_Modal = snapshot.getValue(Login_Modal.class);
+//                     login_Modal = snapshot.getValue(Login_Modal.class);
+                     Toast.makeText(getApplicationContext(), (String) snapshot.child("username").getValue(), Toast.LENGTH_SHORT).show();
+//                     Toast.makeText(Login_Activity.this, login_Modal.getUsername(), Toast.LENGTH_SHORT).show();
                  }
                  @Override
                  public void onCancelled(@NonNull DatabaseError error) {
 
                  }
              });
-             isAuthenticated = login_Modal.authenticate(username, password);
+             Toast.makeText(this, login_Modal.getUsername(), Toast.LENGTH_SHORT).show();
          }catch (Exception ex) {
              Toast.makeText(this, ex.toString(), Toast.LENGTH_SHORT).show();
-             Log.d("123",ex.getMessage());
          }
-
-            Toast.makeText(this, isAuthenticated, Toast.LENGTH_SHORT).show();
-             Toast.makeText(this, isAuthenticated, Toast.LENGTH_SHORT).show();
-                switch (isAuthenticated){
-                    case 0://Password Incorrect
-                        Toast.makeText(this, "Password Incorrect", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 1:// Authenticated
-                        Toast.makeText(this, "Authentication Completed", Toast.LENGTH_SHORT).show();
-                        break;
-                    case -1:// Incorrect Username
-                        Toast.makeText(this, "Username Incorrect", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        Toast.makeText(this, "There is a Problem", Toast.LENGTH_SHORT).show();
-                }
         });
     }
 
