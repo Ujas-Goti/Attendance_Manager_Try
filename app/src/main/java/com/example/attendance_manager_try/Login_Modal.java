@@ -28,10 +28,9 @@ public class Login_Modal {
     }
 
     public int authenticate(String username,String password){
-        Log.d("Method","Entered");
         if(this.username == username){
              if(this.password == password)
-                return 1; //Authenticate
+                return 1; //Authenticated
              else
                 return 0; //Incorrect Password
         }else
