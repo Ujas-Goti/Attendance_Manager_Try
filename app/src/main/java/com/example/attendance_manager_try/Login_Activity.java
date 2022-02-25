@@ -32,25 +32,42 @@ public class Login_Activity extends AppCompatActivity {
         entered_Password = findViewById(R.id.password);
         login = findViewById(R.id.login);
 
-        login.setOnClickListener(view -> { // Login Listener
+        login.setOnClickListener(view -> { // Login Button Listener
+            int isAuthenticated;
             String username = entered_Username.getText().toString();
             String password = entered_Password.getText().toString();
             if(username.equals("") || password.equals("")){
                 Toast.makeText(this, "Please Fill All the Fields", Toast.LENGTH_SHORT).show();
             }
-            login_Modal = new Login_Modal(username,password);
 
             firebaseDatabase  = FirebaseDatabase.getInstance();
-            databaseReference = firebaseDatabase.getReference().child("login_credentials").child(username);
-            int isAuthenticated = login_Modal.authenticate(username,password);
+            databaseReference = firebaseDatabase.getReference().child("login_credentials");
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    login_Modal = snapshot.getValue(Login_Modal.class);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            isAuthenticated = login_Modal.authenticate(username, password); ///
             if(isAuthenticated == 1){
                 // Authenticated
+                Toast.makeText(this, "Authentication Completed", Toast.LENGTH_SHORT).show();
             }else if(isAuthenticated == 0)
             {
                 //Password Incorrect
+                Toast.makeText(this, "Password Incorrect", Toast.LENGTH_SHORT).show();
             }else if(isAuthenticated == -1){
                 // Incorrect Username
+                Toast.makeText(this, "Username Incorrect", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+
     }
 }

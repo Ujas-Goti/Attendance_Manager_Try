@@ -1,5 +1,8 @@
 package com.example.attendance_manager_try;
 
+import android.util.Log;
+import android.widget.Toast;
+
 public class Login_Modal {
 
     private String username;
@@ -25,6 +28,7 @@ public class Login_Modal {
     }
 
     public int authenticate(String username,String password){
+        Log.d("Method","Entered");
         if(this.username == username){
              if(this.password == password)
                 return 1; //Authenticate
