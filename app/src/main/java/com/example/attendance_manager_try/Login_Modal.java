@@ -1,12 +1,9 @@
 package com.example.attendance_manager_try;
 
-import android.util.Log;
-import android.widget.Toast;
-
 public class Login_Modal {
 
-    private String username;
-    private String password;
+    public String username;
+    public String password;
 
     Login_Modal(){}
     Login_Modal(String username, String password){
@@ -15,16 +12,20 @@ public class Login_Modal {
     }
 
     public String getUsername() {
-        return username;
+        return username.toString();
     }
     public void setUsername(String username) {
         this.username = username;
     }
     public String getPassword() {
-        return password;
+        return password.toString();
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Login_Modal getData(Login_Modal login_modal){
+        return login_modal;
     }
 
     public int authenticate(String username,String password){
@@ -36,6 +37,5 @@ public class Login_Modal {
         }else
              return -1; //Incorrect Username
     }
-
 
 }

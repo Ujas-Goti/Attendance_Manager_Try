@@ -2,10 +2,9 @@ package com.example.attendance_manager_try;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.SharedElementCallback;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,7 +20,8 @@ public class Login_Activity extends AppCompatActivity {
     private EditText entered_Username;
     private EditText entered_Password;
     private Button login;
-    private Login_Modal login_Modal;
+    public Login_Modal login_Modal = new Login_Modal("Meet","123");
+    public Login_Modal temp = new Login_Modal();
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
 
@@ -34,32 +34,29 @@ public class Login_Activity extends AppCompatActivity {
         entered_Password = findViewById(R.id.password);
         login = findViewById(R.id.login);
 
-        login.setOnClickListener(view -> { // Login Button Listener
-            int isAuthenticated = 2;
+        login.setOnClickListener(view -> {
             String username = entered_Username.getText().toString();
             String password = entered_Password.getText().toString();
 
-         try {
-             firebaseDatabase  = FirebaseDatabase.getInstance();
-             databaseReference = firebaseDatabase.getReference().child("login_credentials").child(username);
-             databaseReference.addValueEventListener(new ValueEventListener() {
-                 @Override
-                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                     login_Modal = snapshot.getValue(Login_Modal.class);
-                     Toast.makeText(getApplicationContext(), (String) snapshot.child("username").getValue(), Toast.LENGTH_SHORT).show();
-//                     Toast.makeText(Login_Activity.this, login_Modal.getUsername(), Toast.LENGTH_SHORT).show();
-                 }
-                 @Override
-                 public void onCancelled(@NonNull DatabaseError error) {
+            firebaseDatabase  = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference().child("login_credentials");
+            databaseReference.child(username).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    int i = 0;
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        if (i == 0) {
+                            temp.setUsername(dataSnapshot.getValue().toString()); i++; Toast.makeText(Login_Activity.this, "Successful", Toast.LENGTH_SHORT).show(); }
+                        else if (i == 1) {
+                            temp.setPassword(dataSnapshot.getValue().toString());
+                            Toast.makeText(Login_Activity.this, "Password Done", Toast.LENGTH_SHORT).show();
+                        }
+                    }
 
-                 }
-             });
-             Toast.makeText(this, login_Modal.getUsername(), Toast.LENGTH_SHORT).show();
-         }catch (Exception ex) {
-             Toast.makeText(this, ex.toString(), Toast.LENGTH_SHORT).show();
-         }
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) { } });
         });
+
     }
-
-
 }
