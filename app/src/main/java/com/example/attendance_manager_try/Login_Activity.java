@@ -3,7 +3,6 @@ package com.example.attendance_manager_try;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,13 +16,16 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Login_Activity extends AppCompatActivity {
 
-    private EditText entered_Username;
-    private EditText entered_Password;
-    private Button login;
-    public Login_Modal login_Modal = new Login_Modal("Meet","123");
-    public Login_Modal temp = new Login_Modal();
+    EditText entered_Username;
+    EditText entered_Password;
+
+    Button login;
+    Button singUp;
+    Login_Modal login_Modal = new Login_Modal();
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
+    String real_Username;
+    String real_Password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class Login_Activity extends AppCompatActivity {
         entered_Username = findViewById(R.id.username);
         entered_Password = findViewById(R.id.password);
         login = findViewById(R.id.login);
+        singUp = findViewById(R.id.Signup);
 
         login.setOnClickListener(view -> {
             String username = entered_Username.getText().toString();
@@ -46,17 +49,27 @@ public class Login_Activity extends AppCompatActivity {
                     int i = 0;
                     for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         if (i == 0) {
-                            temp.setUsername(dataSnapshot.getValue().toString()); i++; Toast.makeText(Login_Activity.this, "Successful", Toast.LENGTH_SHORT).show(); }
+                            real_Password = dataSnapshot.getValue().toString(); i++;
+                        }
                         else if (i == 1) {
-                            temp.setPassword(dataSnapshot.getValue().toString());
-                            Toast.makeText(Login_Activity.this, "Password Done", Toast.LENGTH_SHORT).show();
+                           real_Username = dataSnapshot.getValue().toString();
+                            Toast.makeText(Login_Activity.this, real_Password, Toast.LENGTH_SHORT).show();
                         }
                     }
-
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) { } });
         });
+
+
+        singUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Login_Activity.this, real_Username, Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
 
     }
 }
