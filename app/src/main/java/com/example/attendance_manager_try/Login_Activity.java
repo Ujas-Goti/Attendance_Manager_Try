@@ -71,8 +71,17 @@ public class Login_Activity extends AppCompatActivity {
                         //Storing Values in Shared Preferences
 
                         int returnedValue = login_modal.authenticate(username, password, Login_Activity.this);
-                        if(returnedValue == 1) {
-                            startActivity(new Intent(Login_Activity.this,Session_Create.class)); finish(); }
+                        if(returnedValue==1){
+                            if (login_modal.getRole().equals("F")) {
+                                startActivity(new Intent(Login_Activity.this, Session_Create.class));
+                                finish();
+                            }
+                            else if (login_modal.getRole().equals("S")) {
+                                startActivity(new Intent(Login_Activity.this, Student1.class));
+                                finish();
+                            }
+                        }
+
                     }else
                         Toast.makeText(Login_Activity.this, "Username Not Found!", Toast.LENGTH_SHORT).show();
                 }
@@ -92,6 +101,10 @@ public class Login_Activity extends AppCompatActivity {
             Toast.makeText(this, "Logged in Automatically", Toast.LENGTH_SHORT).show();
             if (login_modal.getRole().equals("F")) {
                 startActivity(new Intent(Login_Activity.this, Session_Create.class));
+                finish();
+            }
+            else if (login_modal.getRole().equals("S")) {
+                startActivity(new Intent(Login_Activity.this, Student1.class));
                 finish();
             }
         }
