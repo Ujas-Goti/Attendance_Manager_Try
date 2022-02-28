@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,15 +19,15 @@ public class Login_Activity extends AppCompatActivity {
 
     EditText entered_Username;
     EditText entered_Password;
-
+    CheckBox rememberMe;
     Button login;
     Button singUp;
+
     Login_Modal login_modal = new Login_Modal();
+
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
 
-    String real_Username;
-    String real_Password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class Login_Activity extends AppCompatActivity {
         entered_Password = findViewById(R.id.password);
         login = findViewById(R.id.login);
         singUp = findViewById(R.id.Signup);
+        rememberMe = findViewById(R.id.Remember_Me);
 
         login.setOnClickListener(view -> {
             String username = entered_Username.getText().toString();
