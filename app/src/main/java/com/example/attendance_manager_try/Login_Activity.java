@@ -2,6 +2,9 @@ package com.example.attendance_manager_try;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,11 +26,12 @@ public class Login_Activity extends AppCompatActivity {
     Button login;
     Button singUp;
 
+    SharedPreferences sharedPreferences;
+
     Login_Modal login_modal = new Login_Modal();
 
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,24 +47,34 @@ public class Login_Activity extends AppCompatActivity {
         login.setOnClickListener(view -> {
             String username = entered_Username.getText().toString();
             String password = entered_Password.getText().toString();
+            Boolean remember = rememberMe.isChecked();
 
             firebaseDatabase  = FirebaseDatabase.getInstance();
             databaseReference = firebaseDatabase.getReference().child("login_credentials");
             databaseReference.child(username).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    if(snapshot.exists()) {
-                        int i = 0;
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            if (i == 0) {
-                                login_modal.setPassword(dataSnapshot.getValue().toString());
-                                i++;
-                            } else if (i == 1) {
-                                login_modal.setUsername(dataSnapshot.getValue().toString());
-                            }
+                    if (snapshot.exists()) {
+                        login_modal.setUsername(snapshot.child("username").getValue().toString());
+                        login_modal.setPassword(snapshot.child("password").getValue().toString());
+                        login_modal.setRole(snapshot.child("role").getValue().toString());
+                        // Values Stored
+
+                        if(remember) {
+                            sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putString("username", login_modal.getUsername());
+                            editor.putString("password", login_modal.getPassword());
+                            editor.putString("role", login_modal.getRole());
+                            editor.commit();
                         }
-                    }
-                    login_modal.authenticate(username,password,Login_Activity.this);
+                        //Storing Values in Shared Preferences
+
+                        int returnedValue = login_modal.authenticate(username, password, Login_Activity.this);
+                        if(returnedValue == 1) {
+                            startActivity(new Intent(Login_Activity.this,Session_Create.class)); finish(); }
+                    }else
+                        Toast.makeText(Login_Activity.this, "Username Not Found!", Toast.LENGTH_SHORT).show();
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) { } });
@@ -68,4 +82,19 @@ public class Login_Activity extends AppCompatActivity {
 
         singUp.setOnClickListener(view -> Toast.makeText(Login_Activity.this,"SignUp Pressed", Toast.LENGTH_SHORT).show());
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+        if (!sharedPreferences.getString("username", "not").equals("not")) {
+            login_modal.role = sharedPreferences.getString("role", "not");
+            Toast.makeText(this, "Logged in Automatically", Toast.LENGTH_SHORT).show();
+            if (login_modal.getRole().equals("F")) {
+                startActivity(new Intent(Login_Activity.this, Session_Create.class));
+                finish();
+            }
+        }
+    }
+
 }
