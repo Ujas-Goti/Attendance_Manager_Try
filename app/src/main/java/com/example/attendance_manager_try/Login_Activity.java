@@ -43,6 +43,7 @@ public class Login_Activity extends AppCompatActivity {
         login = findViewById(R.id.login);
         singUp = findViewById(R.id.Signup);
         rememberMe = findViewById(R.id.Remember_Me);
+        rememberMe.setChecked(false);
 
         login.setOnClickListener(view -> {
             String username = entered_Username.getText().toString();

@@ -8,15 +8,18 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-        <EditText
+        <TextView
+            android:id="@+id/st1"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:id="@+id/st1"
-            android:drawableLeft="@drawable/ic_baseline_person_24"
-            android:background="@drawable/shapeemail"
-            android:drawablePadding="7dp"
             android:layout_gravity="top|left"
-            />
+            android:background="@drawable/shapeemail"
+            android:drawableLeft="@drawable/ic_baseline_person_24"
+            android:drawablePadding="7dp"
+            android:gravity="center|left|center_vertical"
+            android:text="196120316020"
+            android:textColor="#FFFFFF"
+            android:textSize="25sp" />
 
 
 </LinearLayout>
