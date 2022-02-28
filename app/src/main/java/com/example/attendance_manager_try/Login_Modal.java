@@ -1,5 +1,8 @@
 package com.example.attendance_manager_try;
 
+import android.content.Context;
+import android.widget.Toast;
+
 public class Login_Modal {
 
     public String username;
@@ -28,14 +31,16 @@ public class Login_Modal {
         return login_modal;
     }
 
-//    public int authenticate(String username,String password){
-//        if(this.username == username){
-//             if(this.password == password)
-//                return 1; //Authenticated
-//             else
-//                return 0; //Incorrect Password
-//        }else
-//             return -1; //Incorrect Username
-//    }
+    public int authenticate(String username, String password, Context context) {
 
+        if(this.username.equals(username)){
+            if(this.password.equals(password)){
+                Toast.makeText(context, "Authenticated", Toast.LENGTH_SHORT).show(); return 1;
+            }else
+                Toast.makeText(context, "Incorrect Password", Toast.LENGTH_SHORT).show(); return 0;
+        }else {
+            Toast.makeText(context, "Incorrect Username", Toast.LENGTH_SHORT).show(); return -1;
+        }
+
+    }
 }

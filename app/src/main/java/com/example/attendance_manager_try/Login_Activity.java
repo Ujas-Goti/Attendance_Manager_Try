@@ -21,7 +21,7 @@ public class Login_Activity extends AppCompatActivity {
 
     Button login;
     Button singUp;
-
+    Login_Modal login_modal = new Login_Modal();
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
 
@@ -51,19 +51,18 @@ public class Login_Activity extends AppCompatActivity {
                         int i = 0;
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             if (i == 0) {
-                                real_Password = dataSnapshot.getValue().toString();
+                                login_modal.setPassword(dataSnapshot.getValue().toString());
                                 i++;
                             } else if (i == 1) {
-                                real_Username = dataSnapshot.getValue().toString();
+                                login_modal.setUsername(dataSnapshot.getValue().toString());
                             }
                         }
                     }
-                    authenticate(username,password,real_Username,real_Password);
+                    login_modal.authenticate(username,password,Login_Activity.this);
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) { } });
         });
-
 
         singUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,21 +70,5 @@ public class Login_Activity extends AppCompatActivity {
                 Toast.makeText(Login_Activity.this,"SignUp Pressed", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private int authenticate(String username, String password,String real_Username,String real_Password) {
-        if(real_Username.equals(username)){
-            if(real_Password.equals(password)){
-                Toast.makeText(this, "Authenticated", Toast.LENGTH_SHORT).show();
-                return 1; //Authenticated
-                }
-            else{
-                Toast.makeText(this, "Incorrect Password", Toast.LENGTH_SHORT).show();
-                return 0; //Incorrect Password
-            }
-        }else {
-            Toast.makeText(this, "Username Not Found!", Toast.LENGTH_SHORT).show();
-            return -1; //Incorrect Username
-        }
     }
 }
