@@ -66,11 +66,6 @@ public class Login_Activity extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError error) { } });
         });
 
-        singUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(Login_Activity.this,"SignUp Pressed", Toast.LENGTH_SHORT).show();
-            }
-        });
+        singUp.setOnClickListener(view -> Toast.makeText(Login_Activity.this,"SignUp Pressed", Toast.LENGTH_SHORT).show());
     }
 }
