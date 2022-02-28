@@ -59,6 +59,7 @@ public class Login_Activity extends AppCompatActivity {
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) { } });
+            authenticate(username,password,real_Username,real_Password);
         });
 
 
@@ -66,10 +67,19 @@ public class Login_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Toast.makeText(Login_Activity.this, real_Username, Toast.LENGTH_SHORT).show();
-
             }
         });
 
 
+    }
+
+    private int authenticate(String username,String password,String real_Username,String real_Password) {
+        if(real_Username == username){
+            if(real_Password == password)
+                return 1; //Authenticated
+            else
+                return 0; //Incorrect Password
+        }else
+            return -1; //Incorrect Username
     }
 }
