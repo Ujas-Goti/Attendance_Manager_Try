@@ -21,9 +21,10 @@ public class Login_Activity extends AppCompatActivity {
 
     Button login;
     Button singUp;
-    Login_Modal login_Modal = new Login_Modal();
+
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
+
     String real_Username;
     String real_Password;
 
@@ -46,40 +47,45 @@ public class Login_Activity extends AppCompatActivity {
             databaseReference.child(username).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    int i = 0;
-                    for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        if (i == 0) {
-                            real_Password = dataSnapshot.getValue().toString(); i++;
-                        }
-                        else if (i == 1) {
-                           real_Username = dataSnapshot.getValue().toString();
-                            Toast.makeText(Login_Activity.this, real_Password, Toast.LENGTH_SHORT).show();
+                    if(snapshot.exists()) {
+                        int i = 0;
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            if (i == 0) {
+                                real_Password = dataSnapshot.getValue().toString();
+                                i++;
+                            } else if (i == 1) {
+                                real_Username = dataSnapshot.getValue().toString();
+                            }
                         }
                     }
+                    authenticate(username,password,real_Username,real_Password);
                 }
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) { } });
-            authenticate(username,password,real_Username,real_Password);
         });
 
 
         singUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Login_Activity.this, real_Username, Toast.LENGTH_SHORT).show();
+                Toast.makeText(Login_Activity.this,"SignUp Pressed", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 
-    private int authenticate(String username,String password,String real_Username,String real_Password) {
-        if(real_Username == username){
-            if(real_Password == password)
+    private int authenticate(String username, String password,String real_Username,String real_Password) {
+        if(real_Username.equals(username)){
+            if(real_Password.equals(password)){
+                Toast.makeText(this, "Authenticated", Toast.LENGTH_SHORT).show();
                 return 1; //Authenticated
-            else
+                }
+            else{
+                Toast.makeText(this, "Incorrect Password", Toast.LENGTH_SHORT).show();
                 return 0; //Incorrect Password
-        }else
+            }
+        }else {
+            Toast.makeText(this, "Username Not Found!", Toast.LENGTH_SHORT).show();
             return -1; //Incorrect Username
+        }
     }
 }
