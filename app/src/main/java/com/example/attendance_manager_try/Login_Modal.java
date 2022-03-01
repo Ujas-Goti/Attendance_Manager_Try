@@ -8,6 +8,15 @@ public class Login_Modal {
     public String username;
     public String password;
     public String role;
+    public String enroll;
+
+    public String getEnroll() {
+        return enroll;
+    }
+
+    public void setEnroll(String enroll) {
+        this.enroll = enroll;
+    }
 
     Login_Modal() {
     }
