@@ -29,16 +29,13 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
 
         time_Set = findViewById(R.id.TimeSetter);
         time_Show = findViewById(R.id.time_Shower);
-        time_Set.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Calendar cal = Calendar.getInstance();
-                year = cal.get(Calendar.YEAR);
-                month = cal.get(Calendar.MONTH);
-                day = cal.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(Session_Create.this,Session_Create.this,year,month,day);
-                datePickerDialog.show();
-            }
+        time_Set.setOnClickListener(view -> {
+            Calendar cal = Calendar.getInstance();
+            year = cal.get(Calendar.YEAR);
+            month = cal.get(Calendar.MONTH);
+            day = cal.get(Calendar.DAY_OF_MONTH);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(Session_Create.this,Session_Create.this,year,month,day);
+            datePickerDialog.show();
         });
     }
 
