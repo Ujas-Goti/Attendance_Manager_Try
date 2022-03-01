@@ -6,28 +6,23 @@
     android:layout_height="match_parent"
     android:background="@mipmap/back"
     android:orientation="vertical"
-    android:gravity="center"
+    android:gravity="top"
     android:padding="20dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
+        <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:layout_marginBottom="20dp"
             android:autofillHints=""
             android:background="@drawable/shapeemail"
-            android:drawableLeft="@mipmap/logo_foreground"
             android:drawablePadding="5dp"
             android:padding="15dp"
+            android:textSize="18sp"
+            android:gravity="center|start"
             android:text="@string/create_session"
-            android:textColor="@color/white" />
-    </LinearLayout>
-
+            android:textColor="@color/white"
+            app:drawableLeftCompat="@mipmap/logo_foreground" />
 
     <EditText
         android:id="@+id/Session_Name"
@@ -50,7 +45,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-    <EditText
+    <Spinner
         android:id="@+id/Semester"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -62,9 +57,11 @@
         android:inputType="text"
         android:padding="15dp"
         android:textColor="@color/white"
+        android:entries="@array/sem_Entries"
         android:textColorHighlight="@color/white"
         android:textColorHint="@color/white" />
-        <EditText
+
+        <Spinner
             android:id="@+id/Subject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,8 +72,41 @@
             android:importantForAutofill="no"
             android:inputType="text"
             android:padding="15dp"
+            android:entries="@array/subject_Entries"
             android:textColor="@color/white"
             android:textColorHighlight="@color/white"
+            android:textColorHint="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+       <TextView
+           android:id="@+id/time_Shower"
+           android:layout_width="match_parent"
+           android:layout_weight="1"
+           android:layout_margin="10dp"
+           android:text=""
+           android:textFontWeight="2"
+           android:gravity="center"
+           android:background="@drawable/shapeemail"
+           android:textColor="@color/white"
+           android:layout_height="48dp"/>
+
+        <Button
+            android:id="@+id/TimeSetter"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="7dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/shapeemail"
+            android:ems="10"
+            android:hint="Select Time"
+            android:inputType="time"
+            android:textColor="@color/white"
             android:textColorHint="@color/white" />
 
     </LinearLayout>
