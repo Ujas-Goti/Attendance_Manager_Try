@@ -46,8 +46,8 @@ public class Login_Activity extends AppCompatActivity {
         rememberMe.setChecked(false);
 
         login.setOnClickListener(view -> {
-            String username = entered_Username.getText().toString();
-            String password = entered_Password.getText().toString();
+            String username = entered_Username.getText().toString().trim();
+            String password = entered_Password.getText().toString().trim();
             Boolean remember = rememberMe.isChecked();
 
             firebaseDatabase  = FirebaseDatabase.getInstance();
@@ -56,10 +56,14 @@ public class Login_Activity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
-                        login_modal.setUsername(snapshot.child("username").getValue().toString());
-                        login_modal.setPassword(snapshot.child("password").getValue().toString());
-                        login_modal.setRole(snapshot.child("role").getValue().toString());
-                        // Values Stored
+                        try {
+                            login_modal.setUsername(snapshot.child("username").getValue().toString());
+                            login_modal.setPassword(snapshot.child("password").getValue().toString());
+                            login_modal.setRole(snapshot.child("role").getValue().toString());
+                        }catch (Exception ex) {
+                            Toast.makeText(Login_Activity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        // Values Stored in Login Modal
 
                         if(remember) {
                             sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
@@ -90,15 +94,24 @@ public class Login_Activity extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError error) { } });
         });
 
-        singUp.setOnClickListener(view -> Toast.makeText(Login_Activity.this,"SignUp Pressed", Toast.LENGTH_SHORT).show());
+        singUp.setOnClickListener(view -> {
+            Toast.makeText(this, "SignUP", Toast.LENGTH_SHORT).show();
+//            sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            editor.putString("username","");
+//            editor.putString("password"," ");
+//            editor.putString("role","");
+//            editor.commit();
+        });
+                
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
-        if (!sharedPreferences.getString("username", "not").equals("not")) {
-            login_modal.role = sharedPreferences.getString("role", "not");
+        if (!sharedPreferences.getString("username", "").equals("")) {
+            login_modal.role = sharedPreferences.getString("role", "");
             Toast.makeText(this, "Logged in Automatically", Toast.LENGTH_SHORT).show();
             if (login_modal.getRole().equals("F")) {
                 startActivity(new Intent(Login_Activity.this, Session_Create.class));
