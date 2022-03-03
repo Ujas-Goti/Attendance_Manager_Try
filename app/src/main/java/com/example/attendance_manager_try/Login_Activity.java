@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -28,7 +27,7 @@ public class Login_Activity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
-    Login_Modal login_modal = new Login_Modal();
+    Login_Model login_model = new Login_Model();
 
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
@@ -57,9 +56,9 @@ public class Login_Activity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
                         try {
-                            login_modal.setUsername(snapshot.child("username").getValue().toString());
-                            login_modal.setPassword(snapshot.child("password").getValue().toString());
-                            login_modal.setRole(snapshot.child("role").getValue().toString());
+                            login_model.setUsername(snapshot.child("username").getValue().toString());
+                            login_model.setPassword(snapshot.child("password").getValue().toString());
+                            login_model.setRole(snapshot.child("role").getValue().toString());
                         }catch (Exception ex) {
                             Toast.makeText(Login_Activity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -68,20 +67,20 @@ public class Login_Activity extends AppCompatActivity {
                         if(remember) {
                             sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("username", login_modal.getUsername());
-                            editor.putString("password", login_modal.getPassword());
-                            editor.putString("role", login_modal.getRole());
+                            editor.putString("username", login_model.getUsername());
+                            editor.putString("password", login_model.getPassword());
+                            editor.putString("role", login_model.getRole());
                             editor.commit();
                         }
                         //Storing Values in Shared Preferences
 
-                        int returnedValue = login_modal.authenticate(username, password, Login_Activity.this);
+                        int returnedValue = login_model.authenticate(username, password, Login_Activity.this);
                         if(returnedValue==1){
-                            if (login_modal.getRole().equals("F")) {
+                            if (login_model.getRole().equals("F")) {
                                 startActivity(new Intent(Login_Activity.this, Session_Create.class));
                                 finish();
                             }
-                            else if (login_modal.getRole().equals("S")) {
+                            else if (login_model.getRole().equals("S")) {
                                 startActivity(new Intent(Login_Activity.this, Student1.class));
                                 finish();
                             }
@@ -111,13 +110,13 @@ public class Login_Activity extends AppCompatActivity {
         super.onResume();
         sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
         if (!sharedPreferences.getString("username", "").equals("")) {
-            login_modal.role = sharedPreferences.getString("role", "");
+            login_model.role = sharedPreferences.getString("role", "");
             Toast.makeText(this, "Logged in Automatically", Toast.LENGTH_SHORT).show();
-            if (login_modal.getRole().equals("F")) {
+            if (login_model.getRole().equals("F")) {
                 startActivity(new Intent(Login_Activity.this, Session_Create.class));
                 finish();
             }
-            else if (login_modal.getRole().equals("S")) {
+            else if (login_model.getRole().equals("S")) {
                 startActivity(new Intent(Login_Activity.this, Student1.class));
                 finish();
             }

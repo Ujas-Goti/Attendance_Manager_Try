@@ -9,7 +9,7 @@
     <string name="signup">SIGN UP</string>
     <string name="logo">logo</string>
     <string name="asession_name">Attendance Session Name</string>
-    <string name="select_start_time">Select Start Time</string>
+    <string name="select_start_time">Start Time</string>
     <string name="duration">Session Duration</string>
     <string-array name="sem_Entries">
         <item>Sem-1</item>

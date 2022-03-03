@@ -1,23 +1,41 @@
 package com.example.attendance_manager_try;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
+
 public class Session_Create extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    Button time_Set;
     TextView time_Show;
+    Button time_Set;
+    Button submitSession;
+    EditText sessionName;
+    EditText duration;
+    Spinner semester;
+    Spinner subject;
+
+    DatabaseReference databaseReference;
 
     int day,month,year,hour,minute;
     int final_day,final_month,final_year,final_hour,final_minute;
@@ -29,6 +47,43 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
 
         time_Set = findViewById(R.id.TimeSetter);
         time_Show = findViewById(R.id.time_Shower);
+        sessionName = findViewById(R.id.Session_Name);
+        duration = findViewById(R.id.Duration);
+        semester = findViewById(R.id.Semester);
+        subject = findViewById(R.id.Subject);
+
+        time_set();
+
+        submitSession = findViewById(R.id.Submit_Session);
+        submitSession.setOnClickListener(view -> {
+            String SessionStr = semester.getSelectedItem().toString().replace("Sem-","")+ "_" + subject.getSelectedItem().toString();
+            String Semester = semester.getSelectedItem().toString().replace("Sem-","");
+            String Subject = subject.getSelectedItem().toString();
+            String StartTime = "";
+            int Duration = Integer.parseInt(duration.getText().toString()) * 60; //in Seconds
+
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("Attendance_Session");
+            Session_Model session_model = new Session_Model
+                    (sessionName.getText().toString(),
+                            Semester,
+                            Subject,
+                            StartTime,
+                            Duration
+                    );
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    databaseReference.setValue(session_model);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        });
+
         time_Set.setOnClickListener(view -> {
             Calendar cal = Calendar.getInstance();
             year = cal.get(Calendar.YEAR);
@@ -37,6 +92,12 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
             DatePickerDialog datePickerDialog = new DatePickerDialog(Session_Create.this,Session_Create.this,year,month,day);
             datePickerDialog.show();
         });
+    }
+
+
+
+    public void time_set() {
+        time_Show.setText("Starts At :" + Calendar.HOUR_OF_DAY+ ":" + Calendar.MINUTE);
     }
 
     @Override
@@ -56,6 +117,6 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
     public void onTimeSet(TimePicker timePicker, int i, int i1) {
         final_hour = i;
         final_minute = i1;
-        time_Show.setText("StartTime : " + final_hour + ":" + final_minute);
+        time_Show.setText("Starts At : " + final_hour + ":" + final_minute);
     }
 }
