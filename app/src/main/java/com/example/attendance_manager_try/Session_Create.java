@@ -35,7 +35,10 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
     Spinner semester;
     Spinner subject;
 
+    Session_Model session_model;
+
     DatabaseReference databaseReference;
+    FirebaseDatabase firebaseDatabase;
 
     int day,month,year,hour,minute;
     int final_day,final_month,final_year,final_hour,final_minute;
@@ -59,11 +62,12 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
             String SessionStr = semester.getSelectedItem().toString().replace("Sem-","")+ "_" + subject.getSelectedItem().toString();
             String Semester = semester.getSelectedItem().toString().replace("Sem-","");
             String Subject = subject.getSelectedItem().toString();
-            String StartTime = "";
+            String StartTime = "5";
             int Duration = Integer.parseInt(duration.getText().toString()) * 60; //in Seconds
 
-            databaseReference = FirebaseDatabase.getInstance().getReference().child("Attendance_Session");
-            Session_Model session_model = new Session_Model
+            firebaseDatabase = FirebaseDatabase.getInstance();
+            databaseReference = firebaseDatabase.getReference().child("Attendance_Session");
+            session_model = new Session_Model
                     (sessionName.getText().toString(),
                             Semester,
                             Subject,
@@ -73,15 +77,13 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    databaseReference.setValue(session_model);
+                    Toast.makeText(Session_Create.this, "1", Toast.LENGTH_SHORT).show();
+                    databaseReference.child(SessionStr).setValue(session_model);
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
+                public void onCancelled(@NonNull DatabaseError error) { }});
+            Toast.makeText(this, "HEllo", Toast.LENGTH_SHORT).show();
         });
 
         time_Set.setOnClickListener(view -> {
