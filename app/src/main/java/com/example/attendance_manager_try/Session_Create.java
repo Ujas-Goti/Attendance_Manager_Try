@@ -78,12 +78,16 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Toast.makeText(Session_Create.this, "1", Toast.LENGTH_SHORT).show();
-                    databaseReference.child(SessionStr).setValue(session_model);
+                    databaseReference.child(SessionStr).setValue(session_model).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(Session_Create.this, "Session Created Successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) { }});
-            Toast.makeText(this, "HEllo", Toast.LENGTH_SHORT).show();
         });
 
         time_Set.setOnClickListener(view -> {
