@@ -2,11 +2,16 @@ package com.example.attendance_manager_try;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -42,11 +47,15 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
 
     int day,month,year,hour,minute;
     int final_day,final_month,final_year,final_hour,final_minute;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session_create);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         time_Set = findViewById(R.id.TimeSetter);
         time_Show = findViewById(R.id.time_Shower);
@@ -100,7 +109,35 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu,menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id){
+            case R.id.logout:
+                logout(); break;
+            default:
+                Toast.makeText(this, "Default", Toast.LENGTH_SHORT).show();
+        }
+        return true;
+    }
+
+    private void logout() {
+        Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
+            sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("username","");
+            editor.putString("password"," ");
+            editor.putString("role","");
+            editor.commit();
+            startActivity(new Intent(Session_Create.this,Login_Activity.class));
+    }
 
     public void time_set() {
         time_Show.setText("Starts At :" + Calendar.HOUR_OF_DAY+ ":" + Calendar.MINUTE);

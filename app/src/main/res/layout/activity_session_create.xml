@@ -8,13 +8,27 @@
     android:gravity="top"
     android:padding="20dp">
 
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        app:titleTextColor="@color/white"
+        android:theme="@style/Theme.Attendance_Manager_Try"
+        app:title="Session Create"
+        app:titleMarginStart="40dp"
+        app:contentInsetStart="0dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        />
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:layout_marginBottom="20dp"
             android:autofillHints=""
-            android:background="@drawable/shapeemail"
+            android:background="@drawable/shape_title"
             android:drawablePadding="5dp"
             android:padding="15dp"
             android:textSize="18sp"

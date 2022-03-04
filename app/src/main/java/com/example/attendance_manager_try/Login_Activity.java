@@ -95,12 +95,7 @@ public class Login_Activity extends AppCompatActivity {
 
         singUp.setOnClickListener(view -> {
             Toast.makeText(this, "SignUP", Toast.LENGTH_SHORT).show();
-//            sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.putString("username","");
-//            editor.putString("password"," ");
-//            editor.putString("role","");
-//            editor.commit();
+
         });
                 
     }
