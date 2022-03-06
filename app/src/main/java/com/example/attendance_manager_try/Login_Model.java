@@ -10,20 +10,14 @@ public class Login_Model {
     public String role;
     public String enroll;
 
-    public String getEnroll() {
-        return enroll;
-    }
-
-    public void setEnroll(String enroll) {
-        this.enroll = enroll;
-    }
-
     Login_Model() {
     }
 
-    Login_Model(String username, String password) {
+    public Login_Model(String username, String password, String role, String enroll) {
         this.username = username;
         this.password = password;
+        this.role = role;
+        this.enroll = enroll;
     }
 
     public String getRole() {
@@ -44,6 +38,13 @@ public class Login_Model {
     public void setPassword(String password) {
         this.password = password;
     }
+    public String getEnroll() {
+        return enroll;
+    }
+    public void setEnroll(String enroll) {
+        this.enroll = enroll;
+    }
+
     public Login_Model getData(Login_Model login_model) { return login_model; }
 
     public int authenticate(String username, String password, Context context) {

@@ -55,13 +55,10 @@ public class Login_Activity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     if (snapshot.exists()) {
-                        try {
                             login_model.setUsername(snapshot.child("username").getValue().toString());
                             login_model.setPassword(snapshot.child("password").getValue().toString());
                             login_model.setRole(snapshot.child("role").getValue().toString());
-                        }catch (Exception ex) {
-                            Toast.makeText(Login_Activity.this, ex.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                            login_model.setEnroll(snapshot.child("enroll").getValue().toString());
                         // Values Stored in Login Modal
 
                         if(remember) {
@@ -70,6 +67,7 @@ public class Login_Activity extends AppCompatActivity {
                             editor.putString("username", login_model.getUsername());
                             editor.putString("password", login_model.getPassword());
                             editor.putString("role", login_model.getRole());
+                            editor.putString("enroll", login_model.getEnroll());
                             editor.commit();
                         }
                         //Storing Values in Shared Preferences
@@ -81,7 +79,7 @@ public class Login_Activity extends AppCompatActivity {
                                 finish();
                             }
                             else if (login_model.getRole().equals("S")) {
-                                startActivity(new Intent(Login_Activity.this, Student1.class));
+                                startActivity(new Intent(Login_Activity.this, Student1.class).putExtra("username",login_model.getUsername()));
                                 finish();
                             }
                         }
@@ -97,7 +95,6 @@ public class Login_Activity extends AppCompatActivity {
             Toast.makeText(this, "SignUP", Toast.LENGTH_SHORT).show();
 
         });
-                
     }
 
     @Override

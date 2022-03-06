@@ -81,8 +81,8 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
                             Semester,
                             Subject,
                             StartTime,
-                            Duration
-                    );
+                            Duration);
+
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {

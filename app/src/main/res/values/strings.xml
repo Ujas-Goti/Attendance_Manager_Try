@@ -11,6 +11,7 @@
     <string name="asession_name">Attendance Session Name</string>
     <string name="select_start_time">Start Time</string>
     <string name="duration">Session Duration</string>
+    <string name="submit">Submit</string>
     <string-array name="sem_Entries">
         <item>Sem-1</item>
         <item>Sem-2</item>
