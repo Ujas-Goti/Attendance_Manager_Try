@@ -44,11 +44,16 @@ public class Student1 extends AppCompatActivity {
         databaseReference.child(login_model.getUsername()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                login_model.setUsername(snapshot.child("username").getValue().toString());
-                login_model.setPassword(snapshot.child("password").getValue().toString());
-                login_model.setRole(snapshot.child("role").getValue().toString());
-                login_model.setEnroll(snapshot.child("enroll").getValue().toString());
-                studentEnroll.setText(login_model.getEnroll());
+                try {
+                    login_model.setUsername(snapshot.child("username").getValue().toString());
+                    login_model.setPassword(snapshot.child("password").getValue().toString());
+                    login_model.setRole(snapshot.child("role").getValue().toString());
+                    login_model.setEnroll(snapshot.child("enroll").getValue().toString());
+                    studentEnroll.setText(login_model.getEnroll());
+                }catch (Exception e) {
+                    Toast.makeText(Student1.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override
@@ -94,7 +99,7 @@ public class Student1 extends AppCompatActivity {
         editor.putString("username","");
         editor.putString("password"," ");
         editor.putString("role","");
-        editor.commit();
+        editor.apply();
         startActivity(new Intent(Student1.this,Login_Activity.class));
     }
 
