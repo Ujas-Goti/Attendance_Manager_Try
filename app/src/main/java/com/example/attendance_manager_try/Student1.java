@@ -41,19 +41,19 @@ public class Student1 extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference().child("login_credentials");
         setUsername();
+        studentEnroll.setText(login_model.getEnroll());
         databaseReference.child(login_model.getUsername()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                try {
-                    login_model.setUsername(snapshot.child("username").getValue().toString());
-                    login_model.setPassword(snapshot.child("password").getValue().toString());
-                    login_model.setRole(snapshot.child("role").getValue().toString());
-                    login_model.setEnroll(snapshot.child("enroll").getValue().toString());
-                    studentEnroll.setText(login_model.getEnroll());
-                }catch (NullPointerException e) {
-                    Toast.makeText(Student1.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-
+//                try {
+//                    login_model.setUsername(snapshot.child("username").getValue().toString());
+//                    login_model.setPassword(snapshot.child("password").getValue().toString());
+//                    login_model.setRole(snapshot.child("role").getValue().toString());
+//                    login_model.setEnroll(snapshot.child("enroll").getValue().toString());
+//                    studentEnroll.setText(login_model.getEnroll());
+//                }catch (NullPointerException e) {
+//                    Toast.makeText(Student1.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                }
             }
 
             @Override
@@ -62,12 +62,11 @@ public class Student1 extends AppCompatActivity {
 
     private void setUsername() {
         sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
-        Intent intent = getIntent();
-        login_model.setUsername(intent.getStringExtra("username"));
-        sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
-        if(!sharedPreferences.getString("username", "").equals("")){
-            String username = sharedPreferences.getString("username","");
-            login_model.setUsername(username);
+        if (!sharedPreferences.getString("temp_username", "").equals("")) {
+            login_model.setUsername(sharedPreferences.getString("temp_username",""));
+            login_model.setPassword(sharedPreferences.getString("temp_password",""));
+            login_model.setRole(sharedPreferences.getString("temp_role",""));
+            login_model.setEnroll(sharedPreferences.getString("temp_enroll",""));
         }
     }
 
@@ -96,6 +95,11 @@ public class Student1 extends AppCompatActivity {
         editor.putString("username","");
         editor.putString("password"," ");
         editor.putString("role","");
+        editor.putString("enroll","");
+        editor.putString("temp_username","");
+        editor.putString("temp_password"," ");
+        editor.putString("temp_role","");
+        editor.putString("temp_enroll","");
         editor.apply();
         startActivity(new Intent(Student1.this,Login_Activity.class));
     }

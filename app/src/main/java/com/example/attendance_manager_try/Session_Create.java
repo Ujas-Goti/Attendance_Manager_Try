@@ -134,6 +134,7 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
             editor.putString("username","");
             editor.putString("password"," ");
             editor.putString("role","");
+            editor.putString("enroll","");
             editor.commit();
             startActivity(new Intent(Session_Create.this,Login_Activity.class));
     }
