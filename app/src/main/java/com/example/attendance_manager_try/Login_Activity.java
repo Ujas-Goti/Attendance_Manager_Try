@@ -61,9 +61,20 @@ public class Login_Activity extends AppCompatActivity {
                             login_model.setEnroll(snapshot.child("enroll").getValue().toString());
                         // Values Stored in Login Modal
 
+                        sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("temp_username", login_model.getUsername());
+                        editor.putString("temp_password", login_model.getPassword());
+                        editor.putString("temp_role", login_model.getRole());
+                        if(login_model.getRole().equals("S")){
+                            editor.putString("temp_enroll", login_model.getEnroll());
+                        }
+                        editor.commit();
+                        // Storing User Data in SharedPreferences Temporary
+
                         if(remember) {
                             sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor = sharedPreferences.edit();
                             editor.putString("username", login_model.getUsername());
                             editor.putString("password", login_model.getPassword());
                             editor.putString("role", login_model.getRole());

@@ -59,4 +59,8 @@ public class Login_Model {
             }
         } return -1;
     }
+
+    public void logout() {
+
+    }
 }

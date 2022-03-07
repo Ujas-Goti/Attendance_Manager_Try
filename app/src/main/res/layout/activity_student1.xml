@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             app:titleTextColor="@color/white"
             android:theme="@style/Theme.Attendance_Manager_Try"
-            app:title="Session Create"
+            app:title="Lectures"
             app:titleMarginStart="40dp"
             app:contentInsetStart="0dp"
             app:contentInsetEnd="0dp"
