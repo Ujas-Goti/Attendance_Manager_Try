@@ -45,15 +45,7 @@ public class Student1 extends AppCompatActivity {
         databaseReference.child(login_model.getUsername()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                try {
-//                    login_model.setUsername(snapshot.child("username").getValue().toString());
-//                    login_model.setPassword(snapshot.child("password").getValue().toString());
-//                    login_model.setRole(snapshot.child("role").getValue().toString());
-//                    login_model.setEnroll(snapshot.child("enroll").getValue().toString());
-//                    studentEnroll.setText(login_model.getEnroll());
-//                }catch (NullPointerException e) {
-//                    Toast.makeText(Student1.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
+                
             }
 
             @Override
