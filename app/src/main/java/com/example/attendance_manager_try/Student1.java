@@ -20,12 +20,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class Student1 extends AppCompatActivity {
 
     TextView studentEnroll;
     RecyclerView recyclerView;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+
+    SessionAdapter adapter;
+    ArrayList<Session_Model> arrayList;
 
     Login_Model login_model;
     private SharedPreferences sharedPreferences;
@@ -35,27 +40,34 @@ public class Student1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student1);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference().child("Attendance_Session");
+
         recyclerView=findViewById(R.id.recyclerView1);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        arrayList = new ArrayList<>();
+        adapter = new SessionAdapter(arrayList, this);
+        recyclerView.setAdapter(adapter);
 
-        studentEnroll = findViewById(R.id.studentEnroll);
-        login_model = new Login_Model();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference().child("login_credentials");
-        setUsername();
-        studentEnroll.setText(login_model.getEnroll());
-        databaseReference.child(login_model.getUsername()).addValueEventListener(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Session_Model session_model = dataSnapshot.getValue(Session_Model.class);
+                    arrayList.add(session_model);
+                }
+                adapter.notifyDataSetChanged();
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) { } });
+        studentEnroll = findViewById(R.id.studentEnroll);
+        login_model = new Login_Model();
+        setUsername();
+        studentEnroll.setText(login_model.getEnroll());
     }
 
     private void setUsername() {
@@ -80,26 +92,14 @@ public class Student1 extends AppCompatActivity {
 
         switch (id){
             case R.id.logout:
-                logout(); break;
+                sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+                Login_Model.clearData(this,sharedPreferences);
+                startActivity(new Intent(Student1.this,Login_Activity.class));
+                break;
             default:
                 Toast.makeText(this, "Default", Toast.LENGTH_SHORT).show();
         }
         return true;
-    }
-
-    private void logout() {
-        Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("username","");
-        editor.putString("password"," ");
-        editor.putString("role","");
-        editor.putString("enroll","");
-        editor.putString("temp_username","");
-        editor.putString("temp_password"," ");
-        editor.putString("temp_role","");
-        editor.putString("temp_enroll","");
-        editor.apply();
-        startActivity(new Intent(Student1.this,Login_Activity.class));
     }
 
 }

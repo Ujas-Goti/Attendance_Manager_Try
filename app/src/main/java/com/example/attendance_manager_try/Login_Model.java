@@ -1,6 +1,10 @@
 package com.example.attendance_manager_try;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 public class Login_Model {
@@ -60,7 +64,17 @@ public class Login_Model {
         } return -1;
     }
 
-    public void logout() {
-
+    public static void clearData(Context context,SharedPreferences sharedPreferences) {
+        Toast.makeText(context, "Logged Out", Toast.LENGTH_SHORT).show();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username","");
+        editor.putString("password"," ");
+        editor.putString("role","");
+        editor.putString("enroll","");
+        editor.putString("temp_username","");
+        editor.putString("temp_password"," ");
+        editor.putString("temp_role","");
+        editor.putString("temp_enroll","");
+        editor.apply();
     }
 }

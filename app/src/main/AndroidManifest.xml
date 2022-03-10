@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Attendance_Manager_Try">
         <activity
+            android:name=".View_Attendance"
+            android:exported="false" />
+        <activity
             android:name=".Student1"
             android:exported="false" />
         <activity

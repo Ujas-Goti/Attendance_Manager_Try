@@ -9,8 +9,8 @@
         android:id="@+id/logout" />
 
     <item
-        android:title="Share"
-        android:id="@+id/share"
+        android:title="View Sessions"
+        android:id="@+id/viewSession"
         />
 
 </menu>

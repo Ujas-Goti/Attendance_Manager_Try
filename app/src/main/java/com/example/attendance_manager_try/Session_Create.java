@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -91,9 +92,13 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
                         public void onSuccess(Void unused) {
                             Toast.makeText(Session_Create.this, "Session Created Successfully", Toast.LENGTH_SHORT).show();
                         }
+                    }).addOnCanceledListener(new OnCanceledListener() {
+                        @Override
+                        public void onCanceled() {
+                            Toast.makeText(Session_Create.this, "Some Error Occurred", Toast.LENGTH_SHORT).show();
+                        }
                     });
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) { }});
         });
@@ -120,23 +125,17 @@ public class Session_Create extends AppCompatActivity implements DatePickerDialo
 
         switch (id){
             case R.id.logout:
-                logout(); break;
+                sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+                Login_Model.clearData(this,sharedPreferences);
+                startActivity(new Intent(Session_Create.this,Login_Activity.class));
+                break;
+            case R.id.viewSession:
+                startActivity(new Intent(Session_Create.this, View_Attendance.class));
+                break;
             default:
                 Toast.makeText(this, "Default", Toast.LENGTH_SHORT).show();
         }
         return true;
-    }
-
-    private void logout() {
-        Toast.makeText(this, "Logged Out", Toast.LENGTH_SHORT).show();
-            sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("username","");
-            editor.putString("password"," ");
-            editor.putString("role","");
-            editor.putString("enroll","");
-            editor.commit();
-            startActivity(new Intent(Session_Create.this,Login_Activity.class));
     }
 
     public void time_set() {

@@ -43,5 +43,4 @@
             android:id="@+id/recyclerView1"
             android:background="@drawable/shape_title" />
 
-
 </LinearLayout>
