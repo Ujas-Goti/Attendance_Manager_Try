@@ -13,6 +13,7 @@
     <string name="duration">Session Duration</string>
     <string name="submit">Submit</string>
     <string name="Loading">Loading</string>
+    <string name="subject">Subject</string>
     <string-array name="sem_Entries">
         <item>Sem-1</item>
         <item>Sem-2</item>

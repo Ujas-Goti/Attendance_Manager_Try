@@ -81,6 +81,7 @@ public class View_Attendance extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                spinnerArray.add("------------");
                 for (DataSnapshot data: snapshot.getChildren()) {
                     spinnerArray.add(data.getKey());
                 }
